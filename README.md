@@ -259,6 +259,13 @@ Production build: `npm run build`, then `npm run preview`.
 
 (Drivers and passengers exist only when `DEMO_DATA=true` was used on an empty database.)
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Login](docs/screenshots/01-login.png) | ![Search](docs/screenshots/02-search.png) |
+| ![Seat map](docs/screenshots/05-seat-selection.png) | ![Ticket](docs/screenshots/07-ticket.png) |
+| ![Driver](docs/screenshots/09-driver-trip.png) | ![Admin](docs/screenshots/12-admin-dashboard.png) |
 
 
 ## Known Limitations
