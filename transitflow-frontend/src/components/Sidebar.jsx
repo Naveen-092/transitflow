@@ -10,24 +10,30 @@ export default function Sidebar({ open, onClose }) {
     <>
       {open && <div className="fixed inset-0 z-30 bg-slate-900/30 md:hidden" onClick={onClose} />}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-60 transform border-r border-slate-200 bg-white pt-16 transition-transform md:static md:min-h-[calc(100vh-4rem)] md:translate-x-0 md:pt-0 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 transform border-r border-slate-200 bg-white pt-16 transition-transform print:hidden md:static md:min-h-[calc(100vh-4rem)] md:translate-x-0 md:pt-0 ${
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <nav className="flex flex-col gap-1 p-3">
-          {links.map((link) => (
+        <p className="px-5 pb-2 pt-5 text-xs font-semibold uppercase tracking-wider text-slate-400">
+          {user?.role} menu
+        </p>
+        <nav className="flex flex-col gap-1 px-3 pb-4">
+          {links.map(({ to, label, icon: Icon, end }) => (
             <NavLink
-              key={link.to}
-              to={link.to}
-              end={link.end}
+              key={to}
+              to={to}
+              end={end}
               onClick={onClose}
               className={({ isActive }) =>
-                `rounded-lg px-3 py-2 text-sm font-medium ${
-                  isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-100'
+                `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+                  isActive
+                    ? 'bg-blue-50 text-blue-700 shadow-[inset_3px_0_0_0_theme(colors.blue.600)]'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                 }`
               }
             >
-              {link.label}
+              <Icon size={18} />
+              {label}
             </NavLink>
           ))}
         </nav>

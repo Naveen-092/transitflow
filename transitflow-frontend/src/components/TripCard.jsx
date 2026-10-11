@@ -5,7 +5,7 @@ import { formatDate, formatMoney, formatTime } from '../utils/format';
 export default function TripCard({ trip }) {
   const soldOut = trip.availableSeats === 0;
   return (
-    <Card>
+    <Card className="card-hover">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-lg font-semibold">{trip.source} → {trip.destination}</p>

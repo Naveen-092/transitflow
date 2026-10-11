@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import Seat from './Seat';
+import { Disc3 } from 'lucide-react';
 
 const LEGEND = [
   ['border-green-400 bg-green-50', 'Available'],
@@ -26,8 +27,9 @@ export default function SeatMap({ seats, selectedIds, disabled, onToggle }) {
     <div>
       <div className="mx-auto w-fit rounded-xl border-2 border-slate-300 bg-slate-50 p-4">
         <div className="mb-3 flex justify-end">
-          <span className="rounded bg-slate-200 px-3 py-1 text-xs font-semibold tracking-wide text-slate-600">
-            🛞 DRIVER
+          <span className="flex items-center gap-2 rounded bg-slate-200 px-3 py-1 text-xs font-semibold tracking-wide text-slate-600">
+            <Disc3 size={16} />
+            DRIVER
           </span>
         </div>
         <div className="space-y-2">

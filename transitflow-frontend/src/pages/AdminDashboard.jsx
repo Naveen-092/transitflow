@@ -1,21 +1,14 @@
+import { Bus, CalendarClock, Route, Ticket, Users } from 'lucide-react';
 import Card from '../components/Card';
 import ErrorMessage from '../components/ErrorMessage';
 import LinkButton from '../components/LinkButton';
 import LoadingSpinner from '../components/LoadingSpinner';
+import StatCard from '../components/StatCard';
 import StatusBadge from '../components/StatusBadge';
 import Table from '../components/Table';
 import { useApiList } from '../hooks/useApiList';
 import { useAuth } from '../hooks/useAuth';
 import { formatDate, formatTime } from '../utils/format';
-
-function Stat({ label, value }) {
-  return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p className="text-sm text-slate-500">{label}</p>
-      <p className="text-2xl font-bold">{value}</p>
-    </div>
-  );
-}
 
 const ACTIVE_COLUMNS = [
   { key: 'route', header: 'Route', render: (t) => `${t.source} → ${t.destination}` },
@@ -46,11 +39,11 @@ export default function AdminDashboard() {
       {!loading && (
         <>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            <Stat label="Active buses" value={buses.data.filter((b) => b.status === 'ACTIVE').length} />
-            <Stat label="Active drivers" value={drivers.data.filter((d) => d.active).length} />
-            <Stat label="Active routes" value={routes.data.filter((r) => r.active).length} />
-            <Stat label="Scheduled trips" value={trips.data.filter((t) => t.status === 'SCHEDULED').length} />
-            <Stat label="Confirmed bookings" value={bookings.data.length} />
+            <StatCard label="Active buses" value={buses.data.filter((b) => b.status === 'ACTIVE').length} icon={Bus} tone="blue" />
+            <StatCard label="Active drivers" value={drivers.data.filter((d) => d.active).length} icon={Users} tone="green" />
+            <StatCard label="Active routes" value={routes.data.filter((r) => r.active).length} icon={Route} tone="violet" />
+            <StatCard label="Scheduled trips" value={trips.data.filter((t) => t.status === 'SCHEDULED').length} icon={CalendarClock} tone="amber" />
+            <StatCard label="Confirmed bookings" value={bookings.data.length} icon={Ticket} tone="slate" />
           </div>
 
           <Card title={`On the road now (${active.data.length})`}>

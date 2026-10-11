@@ -1,30 +1,31 @@
-export const ROLE_HOME = {
-  ADMIN: '/admin',
-  DRIVER: '/driver',
-  PASSENGER: '/passenger',
-};
+import {
+  LayoutDashboard, Search, Ticket, User, Route, Bus, MapPin, Users, CalendarClock,
+  ClipboardList, ScanLine, ListChecks,
+} from 'lucide-react';
+
+export const ROLE_HOME = { ADMIN: '/admin', DRIVER: '/driver', PASSENGER: '/passenger' };
 
 export const roleHome = (role) => ROLE_HOME[role] || '/login';
 
 export const NAV = {
   PASSENGER: [
-    { to: '/passenger', label: 'Dashboard', end: true },
-    { to: '/passenger/search', label: 'Search Trips' },
-    { to: '/passenger/bookings', label: 'My Bookings' },
-    { to: '/passenger/profile', label: 'Profile' },
+    { to: '/passenger', label: 'Dashboard', icon: LayoutDashboard, end: true },
+    { to: '/passenger/search', label: 'Search Trips', icon: Search },
+    { to: '/passenger/bookings', label: 'My Bookings', icon: Ticket },
+    { to: '/passenger/profile', label: 'Profile', icon: User },
   ],
   DRIVER: [
-    { to: '/driver', label: 'Dashboard', end: true },
-    { to: '/driver/trips', label: 'My Trips' },
-    { to: '/driver/verify', label: 'Verify Ticket' },
+    { to: '/driver', label: 'Dashboard', icon: LayoutDashboard, end: true },
+    { to: '/driver/trips', label: 'My Trips', icon: ListChecks },
+    { to: '/driver/verify', label: 'Verify Ticket', icon: ScanLine },
   ],
   ADMIN: [
-    { to: '/admin', label: 'Dashboard', end: true },
-    { to: '/admin/buses', label: 'Buses' },
-    { to: '/admin/stops', label: 'Stops' },
-    { to: '/admin/routes', label: 'Routes' },
-    { to: '/admin/drivers', label: 'Drivers' },
-    { to: '/admin/trips', label: 'Trips' },
-    { to: '/admin/bookings', label: 'Bookings' },
+    { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
+    { to: '/admin/buses', label: 'Buses', icon: Bus },
+    { to: '/admin/stops', label: 'Stops', icon: MapPin },
+    { to: '/admin/routes', label: 'Routes', icon: Route },
+    { to: '/admin/drivers', label: 'Drivers', icon: Users },
+    { to: '/admin/trips', label: 'Trips', icon: CalendarClock },
+    { to: '/admin/bookings', label: 'Bookings', icon: ClipboardList },
   ],
 };

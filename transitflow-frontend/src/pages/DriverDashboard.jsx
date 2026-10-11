@@ -1,22 +1,15 @@
 import { useEffect, useState } from 'react';
+import { CalendarClock, Truck, Users } from 'lucide-react';
 import api, { errorMessage } from '../api/axios';
 import Card from '../components/Card';
 import DriverTripCard from '../components/DriverTripCard';
 import ErrorMessage from '../components/ErrorMessage';
 import LinkButton from '../components/LinkButton';
 import LoadingSpinner from '../components/LoadingSpinner';
+import StatCard from '../components/StatCard';
 import { useAuth } from '../hooks/useAuth';
 import { todayISO } from '../utils/format';
 import { isRunning } from '../utils/trip';
-
-function Stat({ label, value }) {
-  return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-      <p className="text-sm text-slate-500">{label}</p>
-      <p className="text-2xl font-bold">{value}</p>
-    </div>
-  );
-}
 
 export default function DriverDashboard() {
   const { user } = useAuth();
@@ -49,9 +42,9 @@ export default function DriverDashboard() {
       {trips && (
         <>
           <div className="grid gap-3 sm:grid-cols-3">
-            <Stat label="Trips in progress" value={running.length} />
-            <Stat label="Trips today" value={todays.length + running.length} />
-            <Stat label="Passengers today" value={passengersToday} />
+            <StatCard label="Trips in progress" value={running.length} icon={Truck} tone="green" />
+            <StatCard label="Trips today" value={todays.length + running.length} icon={CalendarClock} tone="blue" />
+            <StatCard label="Passengers today" value={passengersToday} icon={Users} tone="violet" />
           </div>
 
           {running.length > 0 && (

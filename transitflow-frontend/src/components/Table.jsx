@@ -3,7 +3,7 @@ export default function Table({ columns, rows, rowKey = 'id', empty = 'No record
   return (
     <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
       <table className="min-w-full divide-y divide-slate-200 text-sm">
-        <thead className="bg-slate-50">
+        <thead className="bg-slate-50 text-xs uppercase tracking-wide">
           <tr>
             {columns.map((c) => (
               <th key={c.key} className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-600">
@@ -19,7 +19,7 @@ export default function Table({ columns, rows, rowKey = 'id', empty = 'No record
             </tr>
           ) : (
             rows.map((row) => (
-              <tr key={row[rowKey]} className="hover:bg-slate-50">
+              <tr key={row[rowKey]} className="odd:bg-white even:bg-slate-50/50 hover:bg-slate-100">
                 {columns.map((c) => (
                   <td key={c.key} className="whitespace-nowrap px-4 py-3">
                     {c.render ? c.render(row) : row[c.key]}

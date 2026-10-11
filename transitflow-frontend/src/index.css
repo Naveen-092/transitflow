@@ -1,5 +1,21 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+}
 
 body {
   @apply bg-slate-50 text-slate-800 antialiased;
 }
+
+/* Cards lift slightly on hover when they are clickable lists */
+.card-hover {
+  @apply transition hover:-translate-y-0.5 hover:shadow-md;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.toast-in { animation: toast-in 0.2s ease-out; }
