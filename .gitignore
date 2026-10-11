@@ -1,0 +1,21 @@
+# OS and IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+
+# Build output
+**/target/
+**/node_modules/
+**/dist/
+
+# Secrets and logs
+.env
+**/.env
+!**/.env.example
+*.log
+**/.metadata/

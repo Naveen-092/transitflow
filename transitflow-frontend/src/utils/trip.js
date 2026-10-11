@@ -1,0 +1,1 @@
+export const isRunning = (status) => status === 'STARTED' || status === 'DELAYED';
