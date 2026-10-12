@@ -1,25 +1,27 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { Bus } from 'lucide-react';
 import api, { errorMessage } from '../api/axios';
 import Button from '../components/Button';
-import Card from '../components/Card';
 import ErrorMessage from '../components/ErrorMessage';
 import LinkButton from '../components/LinkButton';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Modal from '../components/Modal';
 import StatusBadge from '../components/StatusBadge';
+import { useToast } from '../hooks/useToast';
 import { formatDate, formatDateTime, formatMoney, formatTime } from '../utils/format';
 
-function Row({ label, children }) {
+function Field({ label, children }) {
   return (
-    <div className="flex justify-between gap-4 py-1.5 text-sm">
-      <dt className="text-slate-500">{label}</dt>
-      <dd className="text-right font-medium">{children}</dd>
+    <div>
+      <p className="text-[11px] uppercase tracking-wide text-slate-400">{label}</p>
+      <p className="text-sm font-semibold">{children}</p>
     </div>
   );
 }
 
 export default function Ticket() {
+  const toast = useToast();
   const { id } = useParams();
   const [booking, setBooking] = useState(null);
   const [error, setError] = useState('');
@@ -40,6 +42,7 @@ export default function Ticket() {
       const res = await api.put(`/bookings/${id}/cancel`);
       setBooking(res.data.data);
       setError('');
+      toast.success('Booking cancelled. Your seats were released.');
     } catch (err) {
       setError(errorMessage(err));
     } finally {
@@ -56,7 +59,7 @@ export default function Ticket() {
 
   return (
     <div className="mx-auto max-w-xl space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between print:hidden">
         <h1 className="text-2xl font-bold">Your ticket</h1>
         <Link to="/passenger/bookings" className="text-sm text-blue-600 hover:underline">All bookings</Link>
       </div>
@@ -66,37 +69,66 @@ export default function Ticket() {
         <ErrorMessage message={`This booking was cancelled${booking.cancelledAt ? ` on ${formatDateTime(booking.cancelledAt)}` : ''}. The ticket is no longer valid.`} />
       )}
 
-      <Card>
-        <div className="flex items-center justify-between border-b border-dashed border-slate-300 pb-3">
-          <div>
-            <p className="text-xs uppercase tracking-wide text-slate-500">Booking reference</p>
-            <p className="font-mono text-lg font-bold">{booking.bookingReference}</p>
-          </div>
-          <StatusBadge status={booking.status} />
+      <div className={`overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg ${confirmed ? '' : 'opacity-70 grayscale'}`}>
+        <div className="flex items-center justify-between bg-gradient-to-r from-blue-700 to-indigo-600 px-6 py-4 text-white">
+          <div className="flex items-center gap-2 font-bold"><Bus size={20} /> TransitFlow</div>
+          <span className="text-xs uppercase tracking-widest text-blue-100">Boarding pass</span>
         </div>
 
-        <dl className="py-3">
-          <Row label="Passenger">{booking.passengerName}</Row>
-          <Row label="Route">{booking.routeName}</Row>
-          <Row label="From">{booking.source}</Row>
-          <Row label="To">{booking.destination}</Row>
-          <Row label="Travel date">{formatDate(booking.tripDate)}</Row>
-          <Row label="Departure">{formatTime(booking.departureTime)}</Row>
-          <Row label="Arrival">{formatTime(booking.arrivalTime)}</Row>
-          <Row label="Bus">{booking.busNumber}</Row>
-          <Row label="Seats">{booking.seatNumbers.join(', ')}</Row>
-          <Row label="Fare per seat">{formatMoney(booking.farePerSeat)}</Row>
-          <Row label="Total fare">{formatMoney(booking.totalAmount)}</Row>
-          <Row label="Booked on">{formatDateTime(booking.bookingDate)}</Row>
-        </dl>
-
-        {confirmed && booking.qrCode && (
-          <div className="flex flex-col items-center border-t border-dashed border-slate-300 pt-4">
-            <img src={booking.qrCode} alt={`QR code for ${booking.bookingReference}`} className="h-44 w-44" />
-            <p className="mt-2 text-xs text-slate-500">Show this code to the driver when boarding</p>
+        <div className="space-y-5 px-6 py-5">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-[11px] uppercase tracking-wide text-slate-400">From</p>
+              <p className="text-2xl font-bold">{booking.source}</p>
+            </div>
+            <div className="flex flex-1 items-center">
+              <span className="h-px flex-1 bg-slate-300" />
+              <Bus size={20} className="mx-2 text-blue-600" />
+              <span className="h-px flex-1 bg-slate-300" />
+            </div>
+            <div className="text-right">
+              <p className="text-[11px] uppercase tracking-wide text-slate-400">To</p>
+              <p className="text-2xl font-bold">{booking.destination}</p>
+            </div>
           </div>
-        )}
-      </Card>
+
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            <Field label="Passenger">{booking.passengerName}</Field>
+            <Field label="Date">{formatDate(booking.tripDate)}</Field>
+            <Field label="Departure">{formatTime(booking.departureTime)}</Field>
+            <Field label="Arrival">{formatTime(booking.arrivalTime)}</Field>
+            <Field label="Bus">{booking.busNumber}</Field>
+            <Field label="Route">{booking.routeName}</Field>
+          </div>
+        </div>
+
+        <div className="relative border-t-2 border-dashed border-slate-300">
+          <span className="absolute -left-3 -top-3 h-6 w-6 rounded-full bg-slate-50" />
+          <span className="absolute -right-3 -top-3 h-6 w-6 rounded-full bg-slate-50" />
+        </div>
+
+        <div className="flex items-center justify-between gap-4 px-6 py-5">
+          <div className="space-y-3">
+            <div>
+              <p className="text-[11px] uppercase tracking-wide text-slate-400">Seats</p>
+              <p className="text-3xl font-bold text-blue-700">{booking.seatNumbers.join(', ')}</p>
+            </div>
+            <Field label="Total fare">{formatMoney(booking.totalAmount)}</Field>
+            <div>
+              <p className="text-[11px] uppercase tracking-wide text-slate-400">Reference</p>
+              <p className="font-mono text-sm font-bold">{booking.bookingReference}</p>
+            </div>
+            <StatusBadge status={booking.status} />
+          </div>
+          {confirmed && booking.qrCode && (
+            <div className="text-center">
+              <img src={booking.qrCode} alt={`QR code for ${booking.bookingReference}`}
+                   className="h-36 w-36 rounded-lg border border-slate-200 p-1" />
+              <p className="mt-1 text-[11px] text-slate-500">Show to the driver</p>
+            </div>
+          )}
+        </div>
+      </div>
 
       <div className="flex flex-wrap gap-2 print:hidden">
         {confirmed && <LinkButton to={`/passenger/trips/${booking.tripId}/track`}>Track bus</LinkButton>}

@@ -10,10 +10,13 @@ import SeatMap from '../components/SeatMap';
 import StatusBadge from '../components/StatusBadge';
 import { useTripSocket } from '../hooks/useTripSocket';
 import { formatDate, formatMoney, formatTime } from '../utils/format';
+import { useToast } from '../hooks/useToast';
+
 
 const MAX_SEATS = 6;
 
 export default function SeatSelection() {
+  const toast = useToast();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -124,6 +127,7 @@ export default function SeatSelection() {
 
   const holdSeats = () => run('hold', async () => {
     await api.post('/bookings/hold', { tripId: Number(id), tripSeatIds: selected });
+    toast.success('Seats held for 5 minutes');
     setSelected([]);
     await loadSeats();
   });
@@ -138,6 +142,7 @@ export default function SeatSelection() {
       tripId: Number(id),
       tripSeatIds: myHeld.map((s) => s.tripSeatId),
     });
+    toast.success('Booking confirmed!');
     navigate(`/passenger/bookings/${res.data.data.id}`, { replace: true });
   });
 

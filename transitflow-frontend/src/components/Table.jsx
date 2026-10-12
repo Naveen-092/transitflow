@@ -6,7 +6,7 @@ export default function Table({ columns, rows, rowKey = 'id', empty = 'No record
         <thead className="bg-slate-50 text-xs uppercase tracking-wide">
           <tr>
             {columns.map((c) => (
-              <th key={c.key} className="whitespace-nowrap px-4 py-3 text-left font-semibold text-slate-600">
+              <th key={c.key} className="whitespace-nowrap px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
                 {c.header}
               </th>
             ))}
@@ -19,7 +19,7 @@ export default function Table({ columns, rows, rowKey = 'id', empty = 'No record
             </tr>
           ) : (
             rows.map((row) => (
-              <tr key={row[rowKey]} className="odd:bg-white even:bg-slate-50/50 hover:bg-slate-100">
+              <tr key={row[rowKey]} className="transition hover:bg-blue-50/40">
                 {columns.map((c) => (
                   <td key={c.key} className="whitespace-nowrap px-4 py-3">
                     {c.render ? c.render(row) : row[c.key]}

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import Seat from './Seat';
 import { Disc3 } from 'lucide-react';
+import Seat from './Seat';
 
 const LEGEND = [
   ['border-green-400 bg-green-50', 'Available'],
@@ -11,7 +11,6 @@ const LEGEND = [
 ];
 
 export default function SeatMap({ seats, selectedIds, disabled, onToggle }) {
-  // Group by row, order by column.
   const rows = useMemo(() => {
     const byRow = new Map();
     seats.forEach((s) => {
@@ -25,11 +24,12 @@ export default function SeatMap({ seats, selectedIds, disabled, onToggle }) {
 
   return (
     <div>
-      <div className="mx-auto w-fit rounded-xl border-2 border-slate-300 bg-slate-50 p-4">
-        <div className="mb-3 flex justify-end">
-          <span className="flex items-center gap-2 rounded bg-slate-200 px-3 py-1 text-xs font-semibold tracking-wide text-slate-600">
-            <Disc3 size={16} />
-            DRIVER
+      <div className="mx-auto w-fit rounded-b-2xl rounded-t-[3rem] border-2 border-slate-300 bg-gradient-to-b from-slate-100 to-white px-5 pb-5 pt-4 shadow-inner">
+        <div className="mb-3 h-2 rounded-full bg-sky-200/80" aria-hidden="true" />
+        <div className="mb-4 flex items-center justify-between">
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Entrance</span>
+          <span className="flex items-center gap-1.5 rounded bg-slate-200 px-3 py-1 text-xs font-semibold tracking-wide text-slate-600">
+            <Disc3 size={14} /> DRIVER
           </span>
         </div>
         <div className="space-y-2">
@@ -40,12 +40,8 @@ export default function SeatMap({ seats, selectedIds, disabled, onToggle }) {
                 const aisleAfter = seat.seatType === 'AISLE' && next?.seatType === 'AISLE';
                 return (
                   <div key={seat.tripSeatId} className="flex items-center gap-2">
-                    <Seat
-                      seat={seat}
-                      selected={selectedIds.includes(seat.tripSeatId)}
-                      disabled={disabled}
-                      onToggle={onToggle}
-                    />
+                    <Seat seat={seat} selected={selectedIds.includes(seat.tripSeatId)}
+                          disabled={disabled} onToggle={onToggle} />
                     {aisleAfter && <span className="w-6" aria-hidden="true" />}
                   </div>
                 );
